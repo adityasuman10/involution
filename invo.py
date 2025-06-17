@@ -6,7 +6,7 @@ import tensorflow as tf
 import keras
 import matplotlib.pyplot as plt
 
-# Set seed for reproducibility.
+
 tf.random.set_seed(42)
 
 class Involution(keras.layers.Layer):
@@ -15,7 +15,7 @@ class Involution(keras.layers.Layer):
     ):
         super().__init__(name=name)
 
-        # Initialize the parameters.
+      
         self.channel = channel
         self.group_number = group_number
         self.kernel_size = kernel_size
@@ -26,12 +26,11 @@ class Involution(keras.layers.Layer):
         # Get the shape of the input.
         (_, height, width, num_channels) = input_shape
 
-        # Scale the height and width with respect to the strides.
+       
         height = height // self.stride
         width = width // self.stride
 
-        # Define a layer that average pools the input tensor
-        # if stride is more than 1.
+      
         self.stride_layer = (
             keras.layers.AveragePooling2D(
                 pool_size=self.stride, strides=self.stride, padding="same"
@@ -53,7 +52,7 @@ class Involution(keras.layers.Layer):
                 ),
             ]
         )
-        # Define reshape layers
+      
         self.kernel_reshape = keras.layers.Reshape(
             target_shape=(
                 height,
@@ -135,13 +134,13 @@ print(
 
 
 
-data_dir = r"C:/vscode/train"  # Use raw string for Windows path
+data_dir = r"C:/vscode/train" 
 image_size = (32, 32)
 batch_size = 256
 
 print("Loading dataset from:", data_dir)
 
-# Load raw datasets first (so class_names are still available)
+
 raw_train_ds = tf.keras.utils.image_dataset_from_directory(
     data_dir,
     validation_split=0.2,
@@ -169,13 +168,13 @@ normalization_layer = tf.keras.layers.Rescaling(1.0 / 255)
 train_ds = raw_train_ds.map(lambda x, y: (normalization_layer(x), y))
 val_ds = raw_val_ds.map(lambda x, y: (normalization_layer(x), y))
 
-# Display 25 sample images
+
 plt.figure(figsize=(10, 10))
-for images, labels in train_ds.take(1):  # Take 1 batch
+for images, labels in train_ds.take(1): 
     for i in range(25):
         plt.subplot(5, 5, i + 1)
         plt.imshow(images[i].numpy())
-        plt.title(class_names[labels[i].numpy()])  # FIX: Convert label tensor to int
+        plt.title(class_names[labels[i].numpy()]) 
         plt.axis("off")
 plt.tight_layout()
 plt.show()
@@ -184,7 +183,7 @@ plt.show()
 
 
 
-# Build the conv model.
+
 print("building the convolution model...")
 conv_model = keras.Sequential(
     [
@@ -202,7 +201,7 @@ conv_model = keras.Sequential(
     ]
 )
 
-# Compile the mode with the necessary loss function and optimizer.
+
 print("compiling the convolution model...")
 conv_model.compile(
     optimizer="adam",
@@ -240,7 +239,7 @@ outputs = keras.layers.Dense(10)(x)
 
 inv_model = keras.Model(inputs=[inputs], outputs=[outputs], name="inv_model")
 
-# Compile the mode with the necessary loss function and optimizer.
+
 print("compiling the involution model...")
 inv_model.compile(
     optimizer="adam",

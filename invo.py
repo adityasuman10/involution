@@ -291,3 +291,13 @@ plt.legend()
 plt.show()
 
 
+print("Final Convolutional Model Accuracy:")
+print(f"Training Accuracy: {conv_hist.history['accuracy'][-1]:.4f}")
+print(f"Validation Accuracy: {conv_hist.history['val_accuracy'][-1]:.4f}")
+
+print("\nFinal Involutional Model Accuracy:")
+print(f"Training Accuracy: {inv_hist.history['accuracy'][-1]:.4f}")
+print(f"Validation Accuracy: {inv_hist.history['val_accuracy'][-1]:.4f}")
+
+
+
